@@ -1,45 +1,41 @@
 from sklearn.datasets import load_diabetes
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.callbacks import EarlyStopping
-import numpy as np
+from tensorflow.keras.layers import Dense, Dropout
+from sklearn.model_selection import train_test_split
 
-# Load the diabetes dataset
-dataset = load_diabetes()
-X = dataset.data
-y = dataset.target
+# 1. 데이터
+datasets = load_diabetes()
+x = datasets.data
+y = datasets.target
 
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.62, shuffle=True, random_state=10)
+print(x.shape, y.shape)     # (442, 10) (442, )
 
-# Define the model architecture
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.3, random_state=543432)
+
+# [실습]
+#  R2 0.62 이상
+
+# 2. 모델구성
 model = Sequential()
 model.add(Dense(64, input_dim=10, activation='relu'))
+model.add(Dropout(0.2))
 model.add(Dense(32, activation='relu'))
+model.add(Dropout(0.2))
+model.add(Dense(16, activation='relu'))
 model.add(Dense(1))
 
-# Compile the model
-optimizer = Adam(lr=0.001)
-model.compile(loss='mse', optimizer=optimizer)
+# 3. 컴파일, 훈련
+model.compile(loss='mse', optimizer='adam')
+model.fit(x_train, y_train, epochs=200, batch_size=16, validation_split=0.2)
 
-# Define early stopping callback to prevent overfitting
-early_stop = EarlyStopping(monitor='val_loss', patience=10)
+# 4. 평가, 예측
+loss = model.evaluate(x_test, y_test)
+print("loss : ", loss)
 
-# Train the model
-history = model.fit(X_train, y_train, epochs=100, batch_size=32, validation_data=(X_test, y_test), callbacks=[early_stop])
+y_predict = model.predict(x_test)
 
-# Evaluate the model on the test set
-loss = model.evaluate(X_test, y_test)
+from sklearn.metrics import r2_score
+r2 = r2_score(y_test, y_predict)
+print("r2 스코어 : ", r2)
 
-# Make predictions on the test set
-y_pred = model.predict(X_test)
-
-# Calculate the R2 score
-r2 = r2_score(y_test, y_pred)
-
-# Print the results
-print("Loss:", loss)
-print("R2 score:", r2)
+# R2 score: 0.6952297334514551
