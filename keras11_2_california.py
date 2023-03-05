@@ -1,53 +1,52 @@
 from sklearn.datasets import fetch_california_housing
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, BatchNormalization
-from tensorflow.keras.optimizers import RMSprop
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import r2_score
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, LeakyReLU
+import numpy as np
 
-# 데이터 로드 및 전처리
+
+
+#1. 데이터
 datasets = fetch_california_housing()
 x = datasets.data
 y = datasets.target
 
-scaler = StandardScaler()
-x = scaler.fit_transform(x)
+print(x.shape, y.shape) # (20640, 8) (20640,)
 
-x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=543432)
+x_train, x_test, y_train, y_test = train_test_split(x,y,
+        train_size=0.8, shuffle=True, random_state=20)
 
-# 모델 구성
-model = Sequential([
-    Dense(128, input_dim=8, activation='relu'),
-    Dropout(0.2),
-    BatchNormalization(),
-    Dense(64, activation='relu'),
-    Dropout(0.2),
-    BatchNormalization(),
-    Dense(32, activation='relu'),
-    Dropout(0.2),
-    BatchNormalization(),
-    Dense(1)
-])
 
-# 모델 컴파일
-optimizer = RMSprop(learning_rate=0.001)
-model.compile(loss='mse', optimizer=optimizer, metrics=['mae'])
+# [실습]
+# R2 0.55 ~ 0.6 이상
 
-# 모델 훈련
-history = model.fit(x_train, y_train, epochs=100, batch_size=16, validation_split=0.2)
+#2. 모델 구성
+model = Sequential()
+model.add(Dense(20, input_dim=8, activation = 'sigmoid'))
+model.add(Dense(30, activation=LeakyReLU()))
+model.add(Dense(40, activation=LeakyReLU()))
+model.add(Dense(80, activation=LeakyReLU()))
+model.add(Dense(60, activation=LeakyReLU()))
+model.add(Dense(40, activation=LeakyReLU()))
+model.add(Dense(20, activation=LeakyReLU()))
+model.add(Dense(15, activation=LeakyReLU()))
+model.add(Dense(1))
 
-# 모델 평가
-loss, mae = model.evaluate(x_test, y_test)
-print('loss:', loss)
-print('mae:', mae)
+#3. 컴파일, 훈련
+model.compile(loss= 'mse', optimizer='adam' )
+model.fit(x_train, y_train, epochs=10, batch_size=8)
 
-# 예측 및 R2 스코어 계산
-y_pred = model.predict(x_test)
-r2 = r2_score(y_test, y_pred)
-print('R2 score:', r2)
 
-# loss: 0.4828324019908905
-# mae: 0.47847476601600647
-# 194/194 [==============================] - 0s 820us/step
-# R2 score: 0.6456286275542857
+#4. 평가, 예측
+loss = model.evaluate(x_test, y_test)
+print("loss : ", loss)
+
+y_predict = model.predict(x_test)
+
+#R2 r2 결정계수
+
+from sklearn.metrics import r2_score #predict 예측한 y값
+r2 = r2_score(y_test, y_predict)
+
+print('r2 스코어 : ', r2)
