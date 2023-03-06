@@ -26,7 +26,7 @@ model.add(Dense(1))
 
 # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
-model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2)
+model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2) #학습시 데이터를 일부 나눠서 Validation(시스템 검증)으로 사용할 비율을 의미
 
 # 4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
