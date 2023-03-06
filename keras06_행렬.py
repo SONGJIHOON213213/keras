@@ -16,3 +16,5 @@ print(x4.shape) # (3, 1)
 print(x5.shape) # (3, 1, 1)
 print(x6.shape) # (2, 2, 2)
 print(x7.shape) # (4, 1, 2)
+
+df = pd.datafarme(array)

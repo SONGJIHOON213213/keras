@@ -18,8 +18,8 @@ print(train_csv.shape) # 출력결과 (1459,11)
 
 
 test_csv = pd.read_csv(path + 'test.csv' ,
-                       index_col=0)                 
-                        
+                       index_col=0)
+
 print(test_csv)
 print(test_csv.shape) #1459,10
 ##########################################
@@ -78,13 +78,9 @@ model.add(Dense(1, input_dim=9))
 
 
 
-
-
-
-
 #3. 컴파일, 훈련
 model.compile(loss='mse',optimizer='adam')
-model.fit(x_train, y_train, epochs=400, batch_size=32, 
+model.fit(x_train, y_train, epochs=300, batch_size=32, 
           verbose=1)
 
 # 4. 평가, 예측
@@ -112,4 +108,6 @@ print(submission) #카운트라는 컬럼에 데이터 데입
 submission['count'] = y_submit
 print(submission)
 
-submission.to_csv(path + 'submit_0318_0447.csv')
+submission.to_csv(path + 'submit_0318_0447.csv')                              
+                        
+
