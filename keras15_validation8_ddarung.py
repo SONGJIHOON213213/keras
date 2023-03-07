@@ -56,7 +56,7 @@ print(train_csv.shape)
 
 
 ############################## train_csv 데이터에서 x와y를 분리
-x = train_csv.drop(['count','casual','registered'], axis=1) #2개 이상 리스트 
+x = train_csv.drop(['count'], axis=1) #2개 이상 리스트 
 print(x)
 
 y = train_csv['count']
@@ -72,15 +72,15 @@ print(y_train.shape, y_test.shape) #(1021,)(438,) (929) (399,)
 
 # 2. 모델구성
 model = Sequential()
-model.add(Dense(1, input_dim=8))
+model.add(Dense(1, input_dim=9))
+model.add(Dense(1))
 
 
 
 
 #3. 컴파일, 훈련
 model.compile(loss='mse',optimizer='adam')
-model.fit(x_train, y_train, epochs=10, batch_size=32, 
-          verbose=1)
+model.fit(x_train, y_train, epochs=10, batch_size=32, verbose=1, validation_split=0.2)
 
 # 4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
@@ -88,8 +88,4 @@ print("loss : ", loss)
 
 y_predict = model.predict(x_test)
 
-
-
-
-
-
+#loss :  303591.125

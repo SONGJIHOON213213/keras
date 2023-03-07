@@ -3,7 +3,7 @@
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-
+from sklearn.model_selection import train_test_split
 
 #1 데이터.
 x = np.array([range(10)]) #3행 10열
@@ -12,9 +12,15 @@ x= x.T #(10,3)
 
 y = np.array([[1,2,3,4,5,6,7,8,9,10],
               [1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9 ],
-              [9,8,7,6,5,4,3,2,1,0]]) #(3,10)
+              [9,8,7,6,5,4,3,2,1,0]]) #
 
-y = y.T #(10,3)
+y = y.T 
+
+print(x.shape, y.shape) 
+
+x_train, x_test, y_train, y_test = train_test_split(x,y,
+        train_size=0.90, shuffle=True, random_state=123)
+
 
 #2. 모델구성
 model = Sequential()
