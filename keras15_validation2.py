@@ -6,10 +6,7 @@ import matplotlib.pyplot as plt
 #1. 데이터
 x_train = np.array(range(1,17)) #X의쉐이프10개 1~16
 y_train = np.array(range(1,17))
-# x_val = np.array([14,15,16])
-# y_val = np.array([14,15,16])
-# x_test = np.array([11,12,13])
-# y_test = np.array([11,12,13])
+
 #실습 :: 잘라봐!!!
 x_val = x_train[14:]
 y_val = y_train[14:]
