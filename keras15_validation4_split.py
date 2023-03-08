@@ -4,16 +4,20 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 
 #1. 데이터
-x = np.array(range(1,17)) #X의쉐이프10개 1~16
+x = np.array(range(1,17)) #X의쉐이프10개 1~16 X의쉐이프 16개
 y = np.array(range(1,17))
 
 #실습 :: 잘라봐!!!
 # train_test_split
 # 10:3:3
 
-x_train, x_test, y_train, y_test = train_test_split(
-x, y, shuffle=True, train_size=0.7, random_state=777
-)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=10/16, random_state=1, shuffle=True)
+
+print(x_train, y_train, x_test, y_test)
+
+x_test, x_val, y_test, y_val = train_test_split(x_test, y_test, train_size=3/6, random_state=123, shuffle=True)
+
+print(x_train, y_train, x_val, y_val, x_test, y_test)
 
 
 print(x_train.shape,x_test.shape)
