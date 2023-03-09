@@ -4,6 +4,7 @@ from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+from tensorflow.python.keras.callbacks import EarlyStopping
 import tensorflow as tf
 
 
@@ -50,7 +51,9 @@ model.add(Dense(10, activation='softmax')) #3개노드를 뽑기위해서
 
 # # # # #3 컴파일, 훈련
 model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['acc'])
-model.fit(x_train, y_train, epochs=10, batch_size=5, validation_split=0.2, verbose=1,)
+model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2, verbose=1,)
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True, patience=80)
+hist = model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2, verbose=1, callbacks=[es])
 
 # #accuracy_score 를 사용해서 스코어를 빼세요
 # # # 4. 평가, 예측
