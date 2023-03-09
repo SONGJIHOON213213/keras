@@ -51,7 +51,6 @@ model.add(Dense(3, activation='softmax')) #3개노드를 뽑기위해서
 
 # # # #3 컴파일, 훈련
 model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['acc'])
-model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2, verbose=1,)
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True, patience=80)
 hist = model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2, verbose=1, callbacks=[es])
 

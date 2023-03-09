@@ -15,11 +15,11 @@ datasets = load_iris()
 
 x = datasets.data
 y = datasets['target']
-# print(x.shape,y.shape) # (150, 4) (150,)
+print(x.shape,y.shape) # (150, 4) (150,)
 # print(x)
 # print(y) #데이터가많아지면,다중분류면 y의 라벨 확인 #컬럼-> 디멘션-> 노드 갯수
 
-#print(x.shape,y.shape)
+print(x.shape,y.shape)
 print(x)
 print(y)
 print('y의 라벨값:', np.unique(y))
@@ -27,7 +27,7 @@ print('y의 라벨값:', np.unique(y))
 
 from keras.utils import to_categorical
 y = to_categorical(y)
-#print(y)
+print(y)
 print(y.shape) 
 ## y를(150,)-> (150, 3) 판다스.겟더미 # 사이킷에 원핫인코더
 ###################################################
@@ -51,7 +51,6 @@ model.add(Dense(3, activation='softmax')) #3개노드를 뽑기위해서
 
 # #3 컴파일, 훈련
 model.compile(loss='categorical_crossentropy',optimizer='adam', metrics=['acc'])
-model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2, verbose=1,)
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True, patience=80)
 hist = model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2, verbose=1, callbacks=[es])
 
