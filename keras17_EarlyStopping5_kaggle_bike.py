@@ -50,6 +50,8 @@ loss = model.evaluate(x_test, y_test)
 print('loss : ', loss)
 
 y_predict = model.predict(x_test)
+submission = pd.read_csv(path + 'sampleSubmission.csv', index_col = 0)
+submission.to_csv(path + 'sample_submission32338 .csv')
 r2 = r2_score(y_test, y_predict)
 print('r2 : ', r2)
 

@@ -47,32 +47,22 @@ y = train_csv['count']
 print(y)
 ###############################train_csv 데이터에서 x와y를 분리
 x_train, x_test, y_train, y_test = train_test_split(
-x, y, shuffle=True, train_size=0.7, random_state=777
+x, y, shuffle=True, train_size=0.7, random_state=1234
 )
 print(x_train.shape, x_test.shape)
 print(y_train.shape, y_test.shape)
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(10, input_dim=8))
-model.add(Dense(10, activation='linear'))
-model.add(Dense(200,activation='relu'))
-model.add(Dense(300 ,activation='relu'))
-model.add(Dense(400 ,activation='relu'))
-model.add(Dense(70 ,activation='relu'))
-model.add(Dense(500 ,activation='relu'))
-model.add(Dense(10 ,activation='relu'))
-model.add(Dense(200,activation='relu'))
-model.add(Dense(300 ,activation='relu'))
-model.add(Dense(400 ,activation='relu'))
-model.add(Dense(70 ,activation='relu'))
-model.add(Dense(500 ,activation='relu'))
-model.add(Dense(10 ,activation='relu'))
+model.add(Dense(32, input_dim=8, activation='relu'))
+model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(8, activation='relu'))
 model.add(Dense(1))
-
 #3. 컴파일, 훈련
 model.compile(loss='mse',optimizer='adam')
-model.fit(x_train, y_train, epochs=600, batch_size=32, 
+model.fit(x_train, y_train, epochs=200, batch_size=16, 
           verbose=1)
 # 4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
@@ -93,7 +83,7 @@ print(submission) #카운트라는 컬럼에 데이터 데입
 submission['count'] = y_submit
 print(submission)
 
-submission.to_csv(path + 'samplesubmission_0321_0447.csv') 
+submission.to_csv(path + 'samplesubmission_0322_0449.csv') 
 
 #최종값이 음수일경우 에러가뜬다.
 #그러므로 양수값을 만들기위해 activation함수사용

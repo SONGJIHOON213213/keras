@@ -36,15 +36,15 @@ x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, random
 model = Sequential()
 model.add(Dense(32, input_dim=8, activation='relu'))
 model.add(Dense(64, activation='relu'))
-model.add(Dense(64, activation='relu'))
+model.add(Dense(32, activation='relu'))
 model.add(Dense(32, activation='relu'))
 model.add(Dense(8, activation='relu'))
 model.add(Dense(1))
 
 # #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
-es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True, patience=80)
-hist = model.fit(x_train, y_train, epochs=200, batch_size=10, validation_split=0.2, verbose=1, callbacks=[es])
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True, patience=200)
+hist = model.fit(x_train, y_train, epochs=1, batch_size=8, validation_split=0.2, verbose=1, callbacks=[es])
 
 # # 4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
@@ -62,7 +62,7 @@ print('acc:', acc)
 y_submit = np.round(model.predict(test_csv))
 submission = pd.read_csv(path + 'sample_submission.csv', index_col = 0)
 submission['Outcome'] = y_submit
-submission.to_csv(path + 'sample_submission32325.csv')
+submission.to_csv(path + 'sample_submission32338 .csv')
 y_predict = model.predict(x_test)
 r2 = r2_score(y_test, y_predict)
 print('r2 : ', r2)
@@ -79,3 +79,15 @@ print('r2 : ', r2)
 
 # #acc: 0.7602040816326531
 #주가예측 시험
+#이진분류 = 다중분류
+#라벨=갯수
+
+#sample_submission32329 값 0.806
+#sample_submission32329 값 0.816
+#sample_submission32330 값 0.806
+#sample_submission32331 값 0.795
+#sample_submission32332 값 0.7908163265306123
+#sample_submission32333 값 acc: 0.7959183673469388
+#sample_submission32334 값
+#sample_submission32335 값
+#sample_submission32336 값
