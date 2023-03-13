@@ -1,11 +1,11 @@
 import numpy as np
-from sklearn.datasets  import load_boston
+from sklearn.datasets import load_boston
 from tensorflow.python.keras.models import Sequential, Model
 from tensorflow.python.keras.layers import Dense, Input
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
-from tensorflow.python.keras.callbacks import EarlyStopping
+#from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
 
 #1. 데이터
@@ -43,22 +43,13 @@ x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test) 
 print(np.min(x), np.max(x))
 
-
-#2.모델
-
-# model = Sequential()
-# model.add(Dense(30,input_shape=(13,)))#input_dim =13 이면 13,로쓰면된다
-# model.add(Dense(20))
-# model.add(Dense(10))
-# model.add(Dense(1))
-
-input1 = Input(shape=(13,)) #input-> desen1 ->dense 2->desne3 -> output1-> 모델순서
-dense1 = Dense(30)(input1)
+input1 = Input(shape=(13)) #input-> desen1 ->dense 2->desne3 -> output1-> 모델순서
+dense1 = Dense(30,name='H2')(input1)
 dense2 = Dense(20)(dense1)
 dense3 = Dense(10)(dense2)
 output1 = Dense(1)(dense3)
 model = Model(inputs = input1, outputs = output1)
-
+model.summary()
 #데이터가 3차원이면
 #(1000,100, 1) ->>> input_shape=(100,1)
 #데이터가 4차원이면

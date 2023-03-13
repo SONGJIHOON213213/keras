@@ -1,5 +1,5 @@
 import numpy as np
-from sklearn.datasets  import load_boston
+from sklearn.datasets import load_digits
 from tensorflow.python.keras.models import Sequential, Model
 from tensorflow.python.keras.layers import Dense, Input
 from sklearn.metrics import accuracy_score
@@ -9,7 +9,7 @@ from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
 
 #1. 데이터
-datasets = load_boston()
+datasets = load_digits()
 # print(datasets.DESCR) #판다스 describe()
 # print(datasets.feature_names)  # 판다스 columes() #Feature ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
 
@@ -52,11 +52,11 @@ print(np.min(x), np.max(x))
 # model.add(Dense(10))
 # model.add(Dense(1))
 
-input1 = Input(shape=(13,)) #input-> desen1 ->dense 2->desne3 -> output1-> 모델순서
+input1 = Input(shape=(64,)) #input-> desen1 ->dense 2->desne3 -> output1-> 모델순서
 dense1 = Dense(30)(input1)
 dense2 = Dense(20)(dense1)
 dense3 = Dense(10)(dense2)
-output1 = Dense(1)(dense3)
+output1 = Dense(10)(dense3)
 model = Model(inputs = input1, outputs = output1)
 
 #데이터가 3차원이면

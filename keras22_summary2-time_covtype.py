@@ -52,6 +52,7 @@ model.summary()
 # 3. 컴파일, 훈련
 es = EarlyStopping(monitor='val_loss', mode='max', verbose=1, patience=10, restore_best_weights=True)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
+
 import time 
 start_time = time.time()
 model.fit(x_train, y_train, epochs=100, batch_size=1, validation_split=0.2)
@@ -60,15 +61,15 @@ end_time = time.time()
 # 4. 평가, 예측
 result = model.evaluate(x_test, y_test)
 print(result)
-print('loss',result[0])
-print('acc', result[1])
+print('result',result[0])
+print('acc' ,result[1])
 
 print("걸린시간 :" ,round(end_time - start_time),2)
 y_predict = model.predict(x_test)
 print(y_predict.shape)
-y_predict = np.argmax(y_predict, axis=-1)
+y_predict = np.argmax(y_predict, axis=1)
 print(y_predict.shape)
-y_true = np.argmax(y_test, axis=-1)
+y_true = np.argmax(y_test, axis=1)
 
 from sklearn.metrics import accuracy_score
 acc = accuracy_score(y_true, y_predict)

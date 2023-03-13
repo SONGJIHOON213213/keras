@@ -1,11 +1,11 @@
 import numpy as np
-from sklearn.datasets  import load_boston
+from sklearn.datasets import load_boston
 from tensorflow.python.keras.models import Sequential, Model
 from tensorflow.python.keras.layers import Dense, Input
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 import tensorflow as tf
-from tensorflow.python.keras.callbacks import EarlyStopping
+#from tensorflow.python.keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
 
 #1. 데이터
@@ -38,8 +38,12 @@ x_train, x_test, y_train, y_test = train_test_split(x, y,
 scaler = StandardScaler() #정답은 (49-50) / 1 = -1이다. 여기서 표준편차란 평균으로부터 얼마나 떨어져있는지를 구한 것이다. 
 # scaler = MaxAbsScaler #최대절대값과 0이 각각 1, 0이 되도록 스케일링
 # scaler = RobustScaler #중앙값(median)과 IQR(interquartile range) 사용. 아웃라이어의 영향을 최소화
-x = scaler.fit(x_train)
-x_train = scaler.transform(x_train)
+##########################한줄로 정리가능 42,43을 45로
+# x = scaler.fit(x_train)
+# x_train = scaler.transform(x_train)
+
+x_train = scaler.fit_transform(x_train)
+############################
 x_test = scaler.transform(x_test) 
 print(np.min(x), np.max(x))
 
@@ -59,18 +63,22 @@ dense3 = Dense(10)(dense2)
 output1 = Dense(1)(dense3)
 model = Model(inputs = input1, outputs = output1)
 
+model.save('./_save/keras26_3_save_model.h5')#  .은현재위치 /통상적으로 확장자는h5
+
 #데이터가 3차원이면
 #(1000,100, 1) ->>> input_shape=(100,1)
 #데이터가 4차원이면
 #(60000,32,32, 3) ->>> input_shape = (32,32,3)
 
+
 #3.컴파일,훈련
 model.compile(loss='mse',optimizer='adam')
 model.fit(x_train,y_train, epochs=10)
-
+"""
 #4. 평가 예측
 loss = model.evaluate(x_test,y_test)
 print('loss:',loss)
 
 #일요일짜과제 StandardScaler내용적기
 #함수<--재사용 함수형모댈
+"""
