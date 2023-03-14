@@ -51,7 +51,7 @@ y = train_csv['count']
 print(y)
 ###############################train_csv 데이터에서 x와y를 분리
 x_train, x_test, y_train, y_test = train_test_split(
-x, y, shuffle=True, train_size=0.7, random_state=999
+x, y, shuffle=True, train_size=0.7, random_state=1234567
 )
 print(x_train.shape, x_test.shape)
 print(y_train.shape, y_test.shape)
@@ -68,10 +68,10 @@ scaler = MinMaxScaler() # 0.0 711.0 #정규화란, 모든 값을 0~1 사이의 �
 
 #2. 모델구성
 input1 = Input(shape=(8,)) #input-> desen1 ->dense 2->desne3 -> output1-> 모델순서
-dense1 = Dense(10, activation='relu')(input1)
-dense2 = Dense(10, activation='relu')(dense1)
-dense3 = Dense(10, activation='relu')(dense2)
-dense4 = Dense(10,  activation='relu')(dense3)
+dense1 = Dense(8, activation='relu')(input1)
+dense2 = Dense(4, activation='relu')(dense1)
+dense3 = Dense(3, activation='relu')(dense2)
+dense4 = Dense(2,  activation='relu')(dense3)
 output1 = Dense(1, activation='relu')(dense4)
 model = Model(inputs = input1, outputs = output1)
 
@@ -100,4 +100,4 @@ print(submission) #카운트라는 컬럼에 데이터 데입
 submission['count'] = y_submit
 print(submission)
 
-submission.to_csv(path + 'samplesubmission_0322_0452.csv') 
+submission.to_csv(path + 'samplesubmission_0322_0453.csv') 

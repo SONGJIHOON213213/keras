@@ -11,7 +11,7 @@ path = './_data/ddarung/'   #점 하나 현재폴더의밑에 점하나는 스�
 
 train_csv = pd.read_csv(path + 'train.csv' ,
                         index_col=0)
-# train_csv = pd.read_csv('./_data/ddarung/train.csv')
+# train_csv = pd.read_csv('./_data/ddarung/train.csv')6
 
 print(train_csv)
 print(train_csv.shape) # 출력결과 (1459,11)

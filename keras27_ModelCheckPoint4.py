@@ -1,29 +1,20 @@
-import numpy as np
+# save_model과 비교 저장할때 지표값,훈련시간 파일에 넣어줘
 from sklearn.datasets import load_boston
-from tensorflow.python.keras.models import Sequential, Model , load_model
+from tensorflow.python.keras.models import Sequential, Model, load_model
 from tensorflow.python.keras.layers import Dense, Input
-from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
-import tensorflow as tf
-#from tensorflow.python.keras.callbacks import EarlyStopping
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler, StandardScaler 
+from sklearn.preprocessing import RobustScaler, MaxAbsScaler 
+from tensorflow.python.keras.callbacks import EarlyStopping
+
 
 #1. 데이터
 datasets = load_boston()
-# print(datasets.DESCR) #판다스 describe()
-# print(datasets.feature_names)  # 판다스 columes() #Feature ['sepal length (cm)', 'sepal width (cm)', 'petal length (cm)', 'petal width (cm)']
 
 x = datasets.data
 y = datasets['target']
 print(x.shape,y.shape) # (150, 4) (150,)
-# print(x)
-# print(y) #데이터가많아지면,다중분류면 y의 라벨 확인 #컬럼-> 디멘션-> 노드 갯수
-
-print(x.shape,y.shape)
-print(x)
-print(y)
-print('y의 라벨값:', np.unique(y))
-###############################요지점에서 원핫을 해야겠죠?
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, 
      shuffle= True, random_state=942, 
@@ -46,32 +37,52 @@ print(np.min(x), np.max(x))
 
 input1 = Input(shape=(13,)) #input-> desen1 ->dense 2->desne3 -> output1-> 모델순서
 dense1 = Dense(30)(input1)
-dense2 = Dense(20, activation='relu')(dense1)
+dense2 = Dense(20)(dense1)
 dense3 = Dense(10)(dense2)
 output1 = Dense(1)(dense3)
 model = Model(inputs = input1, outputs = output1)
 
-# model = load_model('./_save/keras26_5_save_model.h5')#  .은현재위치 /통상적으로 확장자는h5
-# model.load_weights('./_save/keras26_5_save_weightsl.h5')
-#애는 초기 랜덤값의 웨이트만 저장되 있다.
-
+#model.save('./_save/keras26_1_save_model.h5')#  .은현재위치 /통상적으로 확장자는h5
 
 #데이터가 3차원이면
 #(1000,100, 1) ->>> input_shape=(100,1)
 #데이터가 4차원이면
 #(60000,32,32, 3) ->>> input_shape = (32,32,3)
-model.load_weights('./_save/keras26_5_save_weights2.h5')
+6
 
-# #3.컴파일,훈련
-model.compile(loss='mse',optimizer='adam')
-#model.fit(x_train,y_train, epochs=10)
+#3.컴파일,훈련
+model.compile(loss = 'mse',optimizer = 'adam') #MSE 종류면 최소값  
 
-model.save('./save/keras26_5_save_model.h5')
-#가중치저장,loss값 바뀌지않음
+import datetime 
+date = datetime.datetime.now()
+print(date)
+date = date.strftime("%m%d_%H%M")
+print(date) # 0314_1115
 
-# #4. 평가 예측
-loss = model.evaluate(x_test,y_test)
-print('loss:',loss)
 
-#모델의정의가 가장 밑에 들어감
-#모델.pt 하면가중치까지 저장
+filepath = './_save/MCP/keras27_4/'
+filename = '{epoch:04d}-{val_loss:.4f}.hdfs'
+
+
+
+
+from tensorflow.python.keras.callbacks import EarlyStopping,ModelCheckpoint
+
+es = EarlyStopping(monitor='val_loss', patience= 10, mode= 'min', verbose=1, #restore_best_weights = True 
+                   )
+mcp = ModelCheckpoint(monitor='val_loss', mode='auto',verbose=1 ,
+                      save_best_only=True, filepath="".join([filepath,'k27_',date,'_',filename])
+)
+model.fit(x_train,y_train, epochs=1000,batch_size =32 , callbacks=[es, mcp],validation_split=0.2)#호출하겟다
+
+# 4. 평가, 예측
+from sklearn.metrics import r2_score
+
+print('==========================기본출력============================')
+loss = model.evaluate(x_test, y_test, verbose= 0)
+print("loss : ", loss)
+y_predict = model.predict(x_test)
+r2 = r2_score(y_test, y_predict)
+print('r2 score:',  r2)
+
+
