@@ -56,14 +56,14 @@ print(type(train_csv))
 # print(x_train.shape, x_test.shape)
 # print(y_train.shape, y_test.shape)
 
-# scaler = MinMaxScaler() # 0.0 711.0 #정규화란, 모든 값을 0~1 사이의 값으로 바꾸는 것이다
-# # scaler = StandardScaler() #정답은 (49-50) / 1 = -1이다. 여기서 표준편차란 평균으로부터 얼마나 떨어져있는지를 구한 것이다. 
-# # # scaler = MaxAbsScaler #최대절대값과 0이 각각 1, 0이 되도록 스케일링
-# # # scaler = RobustScaler #중앙값(median)과 IQR(interquartile range) 사용. 아웃라이어의 영향을 최소화
-# # x = scaler.fit(x_train)
-# # x_train = scaler.transform(x_train)
-# # x_test = scaler.transform(x_test) 
-# # print(np.min(x), np.max(x))
+scaler = MinMaxScaler() # 0.0 711.0 #정규화란, 모든 값을 0~1 사이의 값으로 바꾸는 것이다
+# scaler = StandardScaler() #정답은 (49-50) / 1 = -1이다. 여기서 표준편차란 평균으로부터 얼마나 떨어져있는지를 구한 것이다. 
+# # scaler = MaxAbsScaler #최대절대값과 0이 각각 1, 0이 되도록 스케일링
+# # scaler = RobustScaler #중앙값(median)과 IQR(interquartile range) 사용. 아웃라이어의 영향을 최소화
+# x = scaler.fit(x_train)
+# x_train = scaler.transform(x_train)
+# x_test = scaler.transform(x_test) 
+# print(np.min(x), np.max(x))
 
 
 

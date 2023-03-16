@@ -120,7 +120,7 @@ date = datetime.datetime.now()
 print(date)
 date = date.strftime("%m%d_%H%M%S")
 print(date) # 0314_1115
-6
+
 # model.save('./_save/keras26_3_save_model.h5')
 # 4. 평가, 예측
 

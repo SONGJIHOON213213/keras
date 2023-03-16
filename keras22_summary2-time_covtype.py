@@ -58,6 +58,7 @@ start_time = time.time()
 model.fit(x_train, y_train, epochs=100, batch_size=1, validation_split=0.2)
 end_time = time.time()
 
+
 # 4. 평가, 예측
 result = model.evaluate(x_test, y_test)
 print(result)

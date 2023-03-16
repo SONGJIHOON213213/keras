@@ -55,7 +55,7 @@ model.add(Dense(20, activation='relu'))
 model.add(Dense(0.5))
 model.add(Dense(10))
 model.add(Dropout(0.1))
-model.add(Dense(1))
+model.add(Dense(1 ))
 
 # #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
