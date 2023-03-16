@@ -63,7 +63,7 @@ model = Model(inputs=input1, outputs=output1)
 class_weight = {0:3000,1 : 26000}
 
 #3. 컴파일, 훈련
-es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True,patience=80) # 기도 메타
+es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True,patience=120) # 기도 메타
 
 model.compile(loss='binary_crossentropy', optimizer='adam')
 
@@ -85,4 +85,4 @@ print('f1 score:', f1)
 y_submit = np.round(model.predict(test_csv)).astype(int)#.flatten()
 submission = pd.read_csv(path + 'sample_submission.csv', index_col=0)
 submission['전화해지여부'] = y_submit
-submission.to_csv(path + 'telephone_submission.csv')
+submission.to_csv(path + 'telephone_submission2.csv')
