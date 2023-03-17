@@ -1,19 +1,17 @@
-from tensorflow.python.keras.models import Sequential, Model , load_model
+from tensorflow.keras.models import Sequential, Model
 import numpy as np
-from tensorflow.python.keras.layers import Dense, Input, Dropout
+from tensorflow.keras.layers import Dense, Input, Dropout
 from sklearn.model_selection import train_test_split
-from tensorflow.python.keras.callbacks import EarlyStopping
+from tensorflow.keras.callbacks import EarlyStopping
 import tensorflow as tf
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler, StandardScaler 
 from sklearn.preprocessing import RobustScaler, MaxAbsScaler
 from sklearn.metrics import r2_score, mean_squared_error
 from sklearn.metrics import accuracy_score,f1_score
 from sklearn.preprocessing import OneHotEncoder
 
-
 #1. 데이터
-path = './_data/telephone/'  
+path = './keras/_data/telephone/'  
 train_csv = pd.read_csv(path + 'train.csv', 
                         index_col=0) 
 
@@ -36,17 +34,19 @@ y = train_csv['전화해지여부']
 
 
 # 1.5 train, test 분리 과적합방지
-x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, random_state=1234, shuffle=True,stratify=y)
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, random_state=995, shuffle=True,stratify=y)
 
 # 2. 스케일링
-scaler = MinMaxScaler()
-x = scaler.fit(x_train)
+scaler = MaxAbsScaler()
+scaler.fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test) 
-test_csv =scaler.transform(test_csv)
+test_csv = scaler.transform(test_csv)
+
 
 
 # # # # # 2. 모델구성
+# model = DecisionTreeClassifier(max_depth=3)
 input1 = Input(shape=(12,))
 dense1 = Dense(60)(input1)
 dense2 = Dense(50, activation='relu')(dense1)
@@ -63,11 +63,15 @@ model = Model(inputs=input1, outputs=output1)
 class_weight = {0:3000,1 : 26000}
 
 #3. 컴파일, 훈련
+
+
+
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True,patience=120) # 기도 메타
 
 model.compile(loss='binary_crossentropy', optimizer='adam')
 
-model.fit(x_train, y_train, epochs=2000, batch_size=60, validation_split=0.2, callbacks=[es], class_weight=class_weight)
+model.fit(x_train, y_train, epochs=1000, batch_size=120, validation_split=0.2, callbacks=[es], class_weight=class_weight)
+
 
 
 # model.save('./_save/keras26_3_save_model.h5')

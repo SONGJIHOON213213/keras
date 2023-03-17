@@ -1,5 +1,5 @@
 from sklearn.datasets import fetch_covtype
-from tensorflow.python.keras.models import Sequential, Model, load_model
+from tensorflow.python.keras.models import Sequential, Model, fetch_covtype
 from tensorflow.python.keras.layers import Dense, Input, Dropout
 from sklearn.model_selection import train_test_split
 import numpy as np

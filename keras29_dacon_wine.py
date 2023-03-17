@@ -19,7 +19,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 
 #1. 데이터
-path = './_data/wine/'  
+path = './keras/_data/wine/'  
 train_csv = pd.read_csv(path + 'train.csv', 
                         index_col=0) 
 
@@ -50,32 +50,32 @@ y = y.reshape(-1,1)
 y = ohe.fit_transform(y).toarray()
 
 
-# 1.5 원핫인코딩
-# print(np.unique(y))     # [3 4 5 6 7 8 9]
-# print(type(y))
-# y = pd.get_dummies(y)
-# print(type(y))
-# print(y)
-# y = np.array(y)
-# print(type(y))
-# print(y)
+# # 1.5 원핫인코딩
+print(np.unique(y))     # [3 4 5 6 7 8 9]
+print(type(y))
+y = pd.get_dummies(y)
+print(type(y))
+print(y)
+y = np.array(y)
+print(type(y))
+print(y)
 
 x_train, x_test, y_train, y_test = train_test_split(x, y, shuffle=True, train_size=0.7, random_state=123 #stratify=y
                                                     ) 
 
 
-6
-####scaler = MinMaxScaler() # 0.0 711.0 #정규화란, 모든 값을 0~1 사이의 값으로 바꾸는 것이다
-# # # scaler = StandardScaler() #정답은 (49-50) / 1 = -1이다. 여기서 표준편차란 평균으로부터 얼마나 떨어져있는지를 구한 것이다. 
-#### scaler = MaxAbsScaler() #최대절대값과 0이 각각 1, 0이 되도록 스케일링
-scaler = RobustScaler() #중앙값(median)과 IQR(interquartile range) 사용. 아웃라이어의 영향을 최소화
+# 6
+scaler = MinMaxScaler() # 0.0 711.0 #정규화란, 모든 값을 0~1 사이의 값으로 바꾸는 것이다
+# # # # scaler = StandardScaler() #정답은 (49-50) / 1 = -1이다. 여기서 표준편차란 평균으로부터 얼마나 떨어져있는지를 구한 것이다. 
+# #### scaler = MaxAbsScaler() #최대절대값과 0이 각각 1, 0이 되도록 스케일링
+# scaler = RobustScaler() #중앙값(median)과 IQR(interquartile range) 사용. 아웃라이어의 영향을 최소화
 x = scaler.fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test) 
 test_csv =scaler.transform(test_csv)
 
 
-# # # # # 2. 모델구성
+# # # # # # 2. 모델구성
 # model = Sequential()
 # dense1 = model.add(Dense(60, input_shape=(12,)))
 # dense1 = model.add(Dropout(0.1))
@@ -106,7 +106,7 @@ model = Model(inputs=input1, outputs=output1)
 # model = load_model('./_save/keras26_3_save_model.h5')
 # model.summary()
 
-#3. 컴파일, 훈련
+# #3. 컴파일, 훈련
 es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, restore_best_weights=True, patience=1000 #기도메타
                    )
 
@@ -122,7 +122,7 @@ date = date.strftime("%m%d_%H%M%S")
 print(date) # 0314_1115
 
 # model.save('./_save/keras26_3_save_model.h5')
-# 4. 평가, 예측
+# # 4. 평가, 예측
 
 result = model.evaluate(x_test, y_test)
 print('result:', result)

@@ -1,22 +1,29 @@
 from tensorflow.python.keras.models import Sequential
 from tensorflow.python.keras.layers import Dense, Conv2D, Flatten
+
 model = Sequential()
-model.add(Conv2D(7, (4,4), 
-                 padding='same',  # 새로운용어 shape를 바뀌지않게 해줌.
-                 input_shape = (8,8,1))) 
+model.add(Conv2D(7, (2,2), padding='same', input_shape=(8,8,1)))        # 출력 : (N, 7, 7, 7)
+# (batch_size, rows, columns, channels)
 
-model.add(Conv2D(filters= 4,            
-                 kernel_size =(3,3),
-                 padding= 'valid', #패딩의 디폴트값은 발리드. 패딩이 2개가 더생김.(7이아님.) 
-                                   #패딩이 양쪽에 생김, 4,4가 되어도 하나씩생김. 
-                 activation= 'relu'))
-model.add(Conv2D(10, (2,2)))
-model.add(Flatten())                  
-model.add(Dense(32, activation= 'relu'))                         
-model.add(Dense(10))
-model.add(Dense(3, activation= 'softmax'))
+# (2*2)*1*7 +7 =35
+
+model.add(Conv2D(filters=4, kernel_size=(3,), padding='same', activation='relu'))         # 출력 : (N, 5, 5, 4)
+# (3*3)*7*4+4 =256
+
+model.add(Conv2D(10, (2,2)))         # 출력 : (N, 4, 4, 10)
+# (2*2)*4*10 + 10 =170
+
+model.add(Flatten())            # 출력 : (N, 160)
+
+model.add(Dense(32, activation='relu'))
+# (160+1)*32
+
+model.add(Dense(10, activation='relu'))
+# (32+1)*10
+
+model.add(Dense(3, activation='softmax'))
+# (10+1)*3
 model.summary()
-
 # _________________________________________________________________
 # Layer (type)                 Output Shape              Param #
 # =================================================================
