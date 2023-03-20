@@ -23,7 +23,7 @@ y_test = np.eye(10)[y_test]
 
     # Create the model
 model = Sequential()
-model.add(Conv2D(7, (15,15), padding='valid', input_shape=(28,28,1)))
+model.add(Conv2D(7, (15,15), padding='same', input_shape=(28,28,1)))
 model.add(MaxPooling2D())
 model.add(Conv2D(filters=4, kernel_size=(9,9), padding='same', activation='relu'))
 model.add(Conv2D(10, (5,5)))
@@ -38,7 +38,7 @@ model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc']
 
     # Train the model
 es = EarlyStopping(monitor='val_acc', patience=15, mode='max', restore_best_weights=True, verbose=1)
-hist = model.fit(x_train, y_train, epochs=5, batch_size=3000, verbose=1, validation_split=0.2, callbacks=[es])
+hist = model.fit(x_train, y_train, epochs=100, batch_size=3000, verbose=1, validation_split=0.2, callbacks=[es])
 
     # Evaluate the model
 results = model.evaluate(x_test, y_test)

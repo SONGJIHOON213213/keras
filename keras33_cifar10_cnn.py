@@ -15,16 +15,16 @@ print(x_test.shape,y_train.shape)
 
 
 #Reshape the data
-# x_train = x_train.reshape(50000, 32 * 32 * 1)
-# x_test = x_test.reshape(10000, 32 * 32 * 1)
+x_train = x_train.reshape(50000, 32 * 32 * 1)
+x_test = x_test.reshape(10000, 32 * 32 * 1)
 
 
-# scaler = MinMaxScaler()
-# x_train = scaler.fit_transform(x_train)
-# x_test = scaler.transform(x_test)
+scaler = MinMaxScaler()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
 
-# x_train = x_train.reshape(50000, 32, 32, 3) 
-# x_test = x_test.reshape(10000, 32, 32, 3)
+x_train = x_train.reshape(50000, 32, 32, 3) 
+x_test = x_test.reshape(10000, 32, 32, 3)
 
 x_train = x_train/255. #->점 찍는 이유 0을 생략하기위해
 x_test = x_test/255.
@@ -47,19 +47,20 @@ y_test = to_categorical(y_train)
 model = Sequential()
 model.add(Conv2D(7, (15,15), 
                  padding='same', 
-                 input_shape = (32,32,3))) 
-model.add(MaxPooling2D())
-model.add(Conv2D(filters= 4,            
-                 kernel_size =(9,9),
-                 padding= 'same', 
-                 activation= 'relu'))
-model.add(Conv2D(10, (5,5)))
-model.add(Flatten())                  
-model.add(Dense(32, activation= 'relu'))                         
-model.add(Dense(15))
-model.add(Dense(10))
-model.add(Dense(10, activation= 'softmax')) #0부터 9까지 여서. print(np.unique(y_train, return_counts = True))
+                 input_shape = (32,32,3))) #3 * 3 = 9 커널사이즈
 model.summary()
+# model.add(MaxPooling2D())
+# model.add(Conv2D(filters= 4,            
+#                  kernel_size =(9,9),
+#                  padding= 'same', 
+#                  activation= 'relu'))
+# model.add(Conv2D(10, (5,5)))
+# model.add(Flatten())                  
+# model.add(Dense(32, activation= 'relu'))                         
+# model.add(Dense(15))
+# model.add(Dense(10))
+# model.add(Dense(10, activation= 'softmax')) #0부터 9까지 여서. print(np.unique(y_train, return_counts = True))
+# model.summary()
 
 # model.add(Dense(15))
 # model.add(Dense(10))
@@ -72,22 +73,22 @@ model.summary()
 
 #
 #3. 컴파일 훈련
-es = EarlyStopping(monitor= 'val_acc', patience= 15, mode = 'max',
-                   restore_best_weights= True,
-                   verbose= 1)
-model.compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = ['acc'])
-hist = model.fit(x_train, y_train, epochs = 5, 
-          batch_size = 3000, verbose = 1,
-          validation_split= 0.2,
-          callbacks = [es])
-results = model.evaluate(x_test,y_test)
-print('results :', results)
-y_predict = model.predict(x_test)
-y_test = np.argmax(y_test, axis =-1)
-y_predict = np.argmax(y_predict, axis =-1)
-#print(y_predict)
-acc = accuracy_score(y_test, y_predict)
-print('Accuary score : ', acc)
+# es = EarlyStopping(monitor= 'val_acc', patience= 15, mode = 'max',
+#                    restore_best_weights= True,
+#                    verbose= 1)
+# model.compile(loss = 'categorical_crossentropy', optimizer = 'adam', metrics = ['acc'])
+# hist = model.fit(x_train, y_train, epochs = 5, 
+#           batch_size = 3000, verbose = 1,
+#           validation_split= 0.2,
+#           callbacks = [es])
+# results = model.evaluate(x_test,y_test)
+# print('results :', results)
+# y_predict = model.predict(x_test)
+# y_test = np.argmax(y_test, axis =-1)
+# y_predict = np.argmax(y_predict, axis =-1)
+# #print(y_predict)
+# acc = accuracy_score(y_test, y_predict)
+# print('Accuary score : ', acc)
 
 
 # import time 
