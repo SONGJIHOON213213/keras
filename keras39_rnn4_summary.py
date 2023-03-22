@@ -21,24 +21,24 @@ model.add(Dense(32, activation ='relu'))
 model.add(Dense(1))
 model.summary()
 
-# # #3.컴파일,훈련
-# model.compile(loss='mse',optimizer='adam')
-# import time 
-# start = time.time()
-# model.fit(x,y, epochs=100)
-# end = time.time()
+# #3.컴파일,훈련
+model.compile(loss='mse',optimizer='adam')
+import time 
+start = time.time()
+model.fit(x,y, epochs=100)
+end = time.time()
 
 
 # #4.평가예측
-# loss = model.evaluate(x, y)
-# x_predict = np.array([6,7,8,9,10]).reshape(1,5,1) #[[8],[9],[10]]]1차원이라 3차원으로 바꾸기위해서 reshape
-# print(x_predict.shape) 
+loss = model.evaluate(x, y)
+x_predict = np.array([6,7,8,9,10]).reshape(1,5,1) #[[8],[9],[10]]]1차원이라 3차원으로 바꾸기위해서 reshape
+print(x_predict.shape) 
 
-# result = model.predict(x_predict)
-# print('loss: ',loss)
-# print('[6,7,8,9,10]의결과',result)
-# print("걸린시간: ", round(end - start))
-#====================================================================
+result = model.predict(x_predict)
+print('loss: ',loss)
+print('[6,7,8,9,10]의결과',result)
+print("걸린시간: ", round(end - start))
+# ====================================================================
 # Layer (type)                Output Shape              Param #
 # =================================================================
 #  simple_rnn (SimpleRNN)      (None, 32)                1088

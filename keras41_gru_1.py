@@ -1,7 +1,6 @@
 import numpy as np
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, SimpleRNN
-
+from tensorflow.keras.layers import Dense, SimpleRNN,LSTM,GRU
 # 1. 데이터
 datasets = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 19])
 x = np.array([[1,2,3,4,5],[2,3,4,5,6],[3,4,5,6,7],[4,5,6,7,8],[5,6,7,8,9]])
@@ -13,16 +12,15 @@ print(x.shape)
 
 # 2. 모델 구성
 model = Sequential()
-model.add(SimpleRNN(600,activation='relu', input_shape = (5,1)))
-model.add(Dense(400, activation ='relu'))
-model.add(Dense(200, activation ='relu'))
-model.add(Dense(100, activation ='relu'))
-model.add(Dense(50, activation ='relu'))
-model.add(Dense(1,  activation = 'linear'))
+model.add(GRU(650), input_shape=((3, 1)))
+model.add(Dense(60, activation ='relu'))
+model.add(Dense(40, activation ='relu'))
+model.add(Dense(30, activation ='relu'))
+model.add(Dense(1))
 
 # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
-model.fit(x, y, epochs=600)
+model.fit(x, y, epochs=1000)
 
 # 4. 평가 예측
 loss = model.evaluate(x, y)
@@ -32,6 +30,3 @@ print(x_predict.shape)
 result = model.predict(x_predict)
 print('loss: ', loss)
 print('[8,9,10]의 결과', result)
-
-# [8,9,10]의 결과 [[11.0156555]]
-# [8,9,10]의 결과 [[11.0273]]
