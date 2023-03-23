@@ -1,0 +1,68 @@
+from tensorflow.python.keras.models import Sequential
+from tensorflow.python.keras.layers import Dense,Conv2D,Flatten,SimpleRNN,Conv1D
+from sklearn.model_selection import train_test_split
+import numpy as np
+import pandas as pd 
+from sklearn.preprocessing import MinMaxScaler 
+from sklearn.metrics import r2_score, mean_squared_error
+
+#1.데이터 
+data_load =  './keras/_data/kaggle_bike/'
+
+train_set = pd.read_csv(data_load+'train.csv'
+                                   ,index_col= 0
+                        )
+test_set = pd.read_csv(data_load + 'test.csv', index_col = 0)
+# print(train_set)
+# print(test_set)
+# print(train_set.isnull().sum())
+train_set=train_set.dropna()
+# print(train_set.isnull().sum())
+
+
+print(train_set.isnull().sum())
+train_csv = train_set.dropna() ####결측치 제거#####
+print(train_csv.isnull().sum()) #(11)
+print(train_csv.info())
+print(train_csv.shape)
+# ############################## train_csv 데이터에서 x와y를 분리
+x = train_csv.drop(['count','casual','registered'], axis=1) #2개 이상 리스트 
+print(x)
+y = train_csv['count']
+print(y)
+x_train,x_test ,y_train,y_test = train_test_split(x,y,train_size = 0.7,random_state=952,shuffle=True)
+
+scaler = MinMaxScaler()
+scaler.fit(x_train) 
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+
+print(x_train.shape) #(7620, 10)
+print(x_test.shape)  #(3266, 10)
+
+x_train = np.reshape(x_train,(7620,8,1)) # 9 * 1 * 1 , 3*3*1,3*1*3
+x_test = np.reshape(x_test,(3266,8,1))
+print(x_train.shape)
+
+
+# # 2. 모델 구성
+model = Sequential()
+model.add(Conv1D(10,2,activation='relu', input_shape = (8,1)))
+model.add(Flatten())
+model.add(Dense(16))
+model.add(Dense(16))
+model.add(Dense(16))
+model.add(Dense(1))
+model.summary()
+
+# # 3. 컴파일, 훈련
+model.compile(loss='mse', optimizer='adam')
+model.fit(x_train, y_train, epochs=10,batch_size=60 , verbose=1, validation_split=0.2)
+
+# # 4. 평가 예측
+
+loss = model.evaluate(x_test, y_test, verbose= 0)
+print("loss : ", loss)
+y_predict = model.predict(x_test)
+r2 = r2_score(y_test, y_predict)
+print('r2 score:',  r2)
