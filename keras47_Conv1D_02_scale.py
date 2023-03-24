@@ -22,19 +22,19 @@ model.add(Dense(1))
 model.summary()
 
 
-# #3.컴파일,훈련
-# model.compile(loss='mse',optimizer='adam')
-# import time 
-# start = time.time()
-# model.fit(x,y, epochs=2000)
-# end = time.time()
+#3.컴파일,훈련
+model.compile(loss='mse',optimizer='adam')
+import time 
+start = time.time()
+model.fit(x,y, epochs=2000)
+end = time.time()
 
-# #4.평가예측
-# loss = model.evaluate(x, y)
-# x_predict = np.array([50,60,70]).reshape(1,3,1) #[[8],[9],[10]]]1차원이라 3차원으로 바꾸기위해서 reshape
-# print(x_predict.shape) 
+#4.평가예측
+loss = model.evaluate(x, y)
+x_predict = np.array([50,60,70]).reshape(1,3,1) #[[8],[9],[10]]]1차원이라 3차원으로 바꾸기위해서 reshape
+print(x_predict.shape) 
 
-# result = model.predict(x_predict)
-# print('loss: ',loss)
-# print('[50,60,70]의결과 80이상 ',result)
-# print("걸린시간: ", round(end - start))
+result = model.predict(x_predict)
+print('loss: ',loss)
+print('[50,60,70]의결과 80이상 ',result)
+print("걸린시간: ", round(end - start))

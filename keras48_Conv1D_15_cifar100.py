@@ -16,7 +16,7 @@ x_train = x_train.reshape(50000,32*3,32)
 x_test = x_test.reshape(10000, 32*3,32)
 #2.모델
 model = Sequential()
-model.add(Conv1D(10,2,activation='relu', input_shape = (96,32)))
+model.add(Conv1D(10,2,  activation='relu', input_shape = (96,32)))
 model.add(Flatten())
 model.add(Dense(16))
 model.add(Dense(16))
@@ -28,7 +28,7 @@ model.compile(optimizer='adam',
               loss='mse',
               metrics=['accuracy'])
 
-model.fit(x_train,y_train,epochs=5 ,batch_size= 80, validation_split = 0.2)
+model.fit(x_train,y_train,epochs=60 ,batch_size= 80, validation_split = 0.2)
 
 # #4. 평가, 예측 
 model.evaluate(x_test,  y_test, verbose=1)
