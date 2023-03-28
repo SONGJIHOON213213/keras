@@ -28,7 +28,7 @@ print(type(df[df.columns[3]].values))
 x=df.drop(df.columns[3],axis=1)
 y=df[df.columns[3]]
 
-ts=6
+ts=10
 #70:20:10 0.7 0.3* 2/3
 #80:10:10 0.8 0.2* 1/2
 #60:30:10 0.6 0.4* (3/4) 
@@ -78,14 +78,13 @@ print(x_predict.shape,y_predict.shape)
 
 # 2. model build
 model=Sequential()
-model.add(LSTM(200,input_shape=(5, 13)))
+model.add(LSTM(200,input_shape=(9, 13)))
 model.add(Dense(64,activation= 'relu'))
-model.add(Dropout(0.5))
-model.add(Dense(64,activation= 'relu'))
-model.add(Dropout(0.5))
-model.add(Dense(64,activation= 'relu'))
-model.add(Dropout(0.5))
-model.add(Dense(64,activation= 'relu'))
+model.add(Dense(50,activation= 'relu'))
+model.add(Dense(40,activation= 'relu'))
+model.add(Dense(30,activation= 'relu'))
+model.add(Dense(20,activation= 'relu'))
+model.add(Dense(10,activation= 'relu'))
 model.add(Dense(1))
 # model.summary()
 # (42036, 19, 13) (42036,)
@@ -96,7 +95,7 @@ model.add(Dense(1))
 from tensorflow.python.keras.callbacks import EarlyStopping
 model.compile(loss='mse',optimizer='adam')
 model.fit(x_train,y_train
-          ,epochs=100,batch_size= 1000
+          ,epochs=300,batch_size= 600
           ,validation_split=0.1,verbose=True
           ,callbacks=EarlyStopping(monitor='val_loss',mode='min'
           ,patience=50
