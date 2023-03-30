@@ -105,10 +105,11 @@ hyundai_x_predict = hyundai_x_predict.reshape([1]+list(hyundai_x_train_split.sha
 predict_result = model.predict([samsung_x_predict, hyundai_x_predict])
 
 
-print("이틀뒤의 현대의 시가 : ", np.round(predict_result[0],2))
+print("이틀뒤의 현대의 시가 : ", np.round(predict_result,2))
 
 
 
 
 #keras53_hyundai18_sjh
 #이틀뒤의 현대의 시가 :  [[179665.]]
+#unknown optimizer 뜨면 custom_objects={('Adam':Adam)}
