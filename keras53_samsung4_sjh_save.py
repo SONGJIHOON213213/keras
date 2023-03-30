@@ -8,6 +8,8 @@ from sklearn.preprocessing import MinMaxScaler, StandardScaler, MaxAbsScaler, Ro
 from sklearn.metrics import r2_score, mean_squared_error
 import matplotlib.pyplot as plt
 import datetime
+
+
 date = datetime.datetime.now()
 date = date.strftime('%m%d_%H%M%S')
 def RMSE(x,y):
@@ -77,7 +79,7 @@ merge=Concatenate()((input1,input2))
 layer=SimpleRNN(32)(merge)
 layer=Dense(16,activation='linear')(layer)
 layer=Dense(16,activation='linear')(layer)
-layer=Dense(16,activation='linear')(layer)
+layer=Dense(16,activation='relu')(layer)
 layer=Dense(16,activation='linear')(layer)
 layer=Dense(16,activation='linear')(layer)
 output1=Dense(1)(layer)
@@ -88,10 +90,10 @@ model.summary()
 
 # # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
-# es = EarlyStopping(monitor='val_loss', mode='min', patience=100, restore_best_weights=True)
-# hist = model.fit([samsung_x_train_split, hyundai_x_train_split], [ hyundai_y_train_split], epochs=3000, batch_size=4, validation_split=0.2, callbacks=[es])
+es = EarlyStopping(monitor='val_loss', mode='min', patience=100, restore_best_weights=True)
+hist = model.fit([samsung_x_train_split, hyundai_x_train_split], [ hyundai_y_train_split], epochs=2000, batch_size=4, validation_split=0.2, callbacks=[es])
 
-model = load_model(path_save + 'keras53_samsung4_sjh.h5')
+model.save(path_save + 'keras53_hyundai16_sjh.h5')
 
 # # 4. 평가, 예측
 loss = model.evaluate([samsung_x_test_split, hyundai_x_test_split], [ hyundai_y_test_split])
@@ -105,10 +107,12 @@ hyundai_x_predict = hyundai_x_predict.reshape([1]+list(hyundai_x_train_split.sha
 predict_result = model.predict([samsung_x_predict, hyundai_x_predict])
 
 
-print("이틀뒤의 현대의 시가 : ", np.round(predict_result[0],2))
+print("이틀뒤의 현대의 시가 : ", np.round(predict_result,2))
 
+plt.plot(range(len(hyundai_y_train_split)),hyundai_y_train_split,label='origin')
+plt.plot(range(len(hyundai_y_train_split)),model.predict([samsung_x_train_split, hyundai_x_train_split]),label='model')
+plt.legend()
+plt.show()
 
-
-
-#keras53_hyundai18_sjh
-#이틀뒤의 현대의 시가 :  [[179665.]]
+#keras53_hyundai18_sjh.h5
+#[[179665.]]

@@ -47,11 +47,11 @@ def split_x(dt, st):
     return np.array(a)
 # 1. 데이터
 # 1.1 경로, 가져오기
-path = './keras/_data/시험/'
+path = './_data/시험/'
 path_save = './_save/samsung/'
 
-datasets_samsung = pd.read_csv(path + '삼성전자 주가2.csv', index_col=0, encoding='cp949')
-datasets_hyundai = pd.read_csv(path + '현대자동차.csv', index_col=0, encoding='cp949')
+datasets_samsung = pd.read_csv(path + '삼성전자 주가3.csv', index_col=0, encoding='cp949')
+datasets_hyundai = pd.read_csv(path + '현대자동차2.csv', index_col=0, encoding='cp949')
 
 # print(datasets_samsung.shape, datasets_hyundai.shape)
 # print(datasets_samsung.columns, datasets_hyundai.columns)
@@ -112,29 +112,22 @@ dense13 = Dense(100, name='huyn3')(dense12)
 dense14 = Dense(90, name='huyn4')(dense13)
 output2 = Dense(70, name='output2')(dense14)
 
-# 2.3 너지
+# 2.3  Concatenate
 nerge1 = Concatenate(name='mg1')([output1, output2])
 reshape1=Reshape((90,2))(nerge1)
 dense1 = LSTM(40, activation='relu', name='sam5')(reshape1)
 dense2 = Dense(200, activation='relu', name='sam6')(dense1)
 dense3 = Dense(300, activation='relu', name='sam7')(dense2)
 output1 = Dense(110, activation='relu', name='sam8')(dense3)
-
+# 2.4 분기1
 
 nerge2 = Dense(80, activation='relu', name='ng2')(output1)
 nerge3 = Dense(50, activation='relu', name='ng3')(nerge2)
 hidden_output = Dense(50, name='last')(nerge3)
 
-# 2.4 분기1
-bungi1 = Dense(10, activation='selu', name='bg1')(hidden_output)
-bungi2 = Dense(10, name='bg2')(bungi1)
-last_output1 = Dense(1, name='last1')(bungi2)
-
-# 2.5 분기2
-# last_output2 = Dense(1, activation='linear', name='last2')(hidden_output)
-
 # 2.6 모델 조립
-model = Model(inputs=[input1, input2], outputs=[last_output1])
+model = Model(inputs=[input1, input2], outputs=[output1])
+
 model.summary()
 # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')

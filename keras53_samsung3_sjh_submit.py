@@ -1,16 +1,3 @@
-# 삼성전자와 현대자동차 주가로 삼성전자 주가 맞추기
-# 각각 데이터에서 컬럼 7개 이상 추출(그 중 거래량은 반드시 들어갈 것)
-# timesteps와 feature는 알아서 잘라라
-
-# 제공된 데이터 외 추가 데이터 사용 금지
-
-# 1. 삼성전자 주가3.csv 28일(화) 종가 맞추기(점수배점 0.3)
-# 2. 현대자동차2.csv 29일(수) 아침 시가 맞추기(점수배점 0.7)
-# 메일 제목 : 송지훈 [삼성 1차] 60,350.07원
-# 첨부 파일 : keras53_samsung2_jsw_submit.py
-# 첨부 파일 : keras53_samsung4_jsw_submit.py
-# 가중치    : _save/samsung/keras53_samsung2_jsw.j5
-# 가중치    : _save/samsung/keras53_samsung4_jsw.j5
 import numpy as np
 import pandas as pd
 from tensorflow.keras.models import Sequential, load_model, Model
@@ -31,10 +18,6 @@ tf.random.set_seed(seed)
 
 date = datetime.datetime.now()
 date = date.strftime('%m%d_%H%M%S')
-path = './keras/_data/시험/'
-path_save = './_save/samsung/'
-
-
 
 def RMSE(x,y):
     return np.sqrt(mean_squared_error(x,y))
@@ -47,7 +30,7 @@ def split_x(dt, st):
     return np.array(a)
 # 1. 데이터
 # 1.1 경로, 가져오기
-path = './keras/_data/시험/'
+path = './_data/시험/'
 path_save = './_save/samsung/'
 
 datasets_samsung = pd.read_csv(path + '삼성전자 주가3.csv', index_col=0, encoding='cp949')
@@ -65,10 +48,10 @@ hyundai_x = np.array(datasets_hyundai.drop(['전일비', '종가'], axis=1))
 hyundai_y = np.array(datasets_hyundai['종가'])
 
 
-samsung_x = samsung_x[:230, :]
-samsung_y = samsung_y[:230]
-hyundai_x = hyundai_x[:230, :]
-hyundai_y = hyundai_y[:230]
+samsung_x = samsung_x[:200, :]
+samsung_y = samsung_y[:200]
+hyundai_x = hyundai_x[:200, :]
+hyundai_y = hyundai_y[:200]
 
 samsung_x, samsung_y = np.flip(samsung_x, axis=1), np.flip(samsung_y)
 hyundai_x, hyundai_y = np.flip(hyundai_x, axis=1), np.flip(hyundai_y)
@@ -101,13 +84,13 @@ samsung_y_train_split, samsung_y_test_split, hyundai_y_train_split, hyundai_y_te
 input1 = Input(shape=(timesteps, 14))
 input2 = Input(shape=(timesteps, 14))
 nerge1 = Concatenate(name='mg1')([input1, input2])
-layer1 = LSTM(32)(nerge1)
-layer1  = Dense(50,name='huyn2')(layer1)
-layer1  = Dense(16,name='huyn3')(layer1)
-layer1 =  Dense(16,name='huyn4')(layer1)
-layer1 =  Dense(16,name='huyn5')(layer1)
-layer1  = Dense(16,name='huyn6')(layer1)
-layer1  = Dense(16,name='huyn7')(layer1)
+layer1 = LSTM(100)(nerge1)
+layer1  = Dense(40,activation='linear',name='huyn2')(layer1)
+layer1  = Dense(16,activation='linear',name='huyn3')(layer1)
+layer1 =  Dense(16,activation='linear',name='huyn4')(layer1)
+layer1 =  Dense(16,activation='linear',name='huyn5')(layer1)
+layer1  = Dense(16,activation='linear',name='huyn6')(layer1)
+layer1  = Dense(16,activation='linear',name='huyn7')(layer1)
 output1 = Dense(1,name='output1')(layer1)
 
 # 2.6 모델 조립
@@ -118,47 +101,26 @@ model.summary()
 # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
 es = EarlyStopping(monitor='val_loss', mode='min', patience=50, restore_best_weights=True)
-hist = model.fit([samsung_x_train_split, hyundai_x_train_split], [samsung_y_train_split], epochs=2000, batch_size=20,
+hist = model.fit([samsung_x_train_split, hyundai_x_train_split], [samsung_y_train_split], epochs=2000, batch_size=30,
                  validation_data=([samsung_x_test_split, hyundai_x_test_split], [samsung_y_test_split, hyundai_y_test_split]), callbacks=[es])
 
-model.save(path_save + 'keras53_samsung2_sjh.h5')
-
+model = load_model('./_save/samsung/keras53_samsung3_sjh.h5')
 
 # 4. 평가, 예측
 
 loss = model.evaluate([samsung_x_test_split, hyundai_x_test_split], [samsung_y_test_split])
 print('loss : ', loss)
 
-for_r2=model.predict([samsung_x_test_split, hyundai_x_test_split])
-print(samsung_y_test_split.shape,for_r2.shape)
-r2_samsung=r2_score(samsung_y_test_split,for_r2)
+# for_r2=model.predict([samsung_x_test_split, hyundai_x_test_split])
+# print(samsung_y_test_split.shape,for_r2.shape)
+# r2_samsung=r2_score(samsung_y_test_split,for_r2)
 # r2_hyundai=r2_score(hyundai_y_test_split,for_r2[1])
 
-print(f'결정 계수 : {r2_samsung}')
+# print(f'결정 계수 : {r2_samsung}')
 
 samsung_x_predict = np.reshape(samsung_x_test[-timesteps:], (1, timesteps, 14))
 hyundai_x_predict = np.reshape(hyundai_x_test[-timesteps:], (1, timesteps, 14))
 
 predict_result = model.predict([samsung_x_predict, hyundai_x_predict])
 
-print("내일의 종가 : ", np.round(predict_result, 2)) 
-
-def val_split(x):
-    return x[2*len(x)//5:]
-x1_val=val_split(samsung_x_train_split)
-x2_val=val_split(hyundai_x_train_split)
-y1_val=val_split(samsung_y_train_split)
-y2_val=val_split(hyundai_y_train_split)
-
-
-import matplotlib.pyplot as plt
-y_pred = model.predict([x1_val,x2_val])
-plt.subplot(1,2,1)
-plt.plot(range(len(y1_val)),y1_val,label='real')
-plt.plot(range(len(y1_val)),y_pred,label='model')
-plt.legend()
-# plt.subplot(1,2,2)
-# plt.plot(range(len(y2_val)),y2_val,label='real')
-# plt.plot(range(len(y2_val)),y_pred[1],label='model')
-# plt.legend()
-plt.show()
+print("내일의 종가 : ", np.round(predict_result[0], 2)) 

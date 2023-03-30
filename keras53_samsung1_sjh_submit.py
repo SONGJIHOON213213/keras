@@ -34,10 +34,10 @@ print(datasets_samsung.info(), datasets_hyundai.info())
 print(datasets_samsung.describe(), datasets_hyundai.describe())
 print(type(datasets_samsung), type(datasets_hyundai))
 
-samsung_x = np.array(datasets_samsung.drop(['전일비', '시가'], axis=1))
-samsung_y = np.array(datasets_samsung['시가'])
-hyundai_x = np.array(datasets_hyundai.drop(['전일비', '시가'], axis=1))
-hyundai_y = np.array(datasets_hyundai['시가'])
+samsung_x = np.array(datasets_samsung.drop(['전일비', '종가'], axis=1))
+samsung_y = np.array(datasets_samsung['종가'])
+hyundai_x = np.array(datasets_hyundai.drop(['전일비', '종가'], axis=1))
+hyundai_y = np.array(datasets_hyundai['종가'])
 
 samsung_x = samsung_x[:180, :]
 samsung_y = samsung_y[:180]
@@ -81,7 +81,7 @@ hyundai_y_test_split = hyundai_y_test[timesteps:]
 print(samsung_x_train_split.shape)
 print(hyundai_x_train_split.shape)
 
-model = load_model('./_save/samsung/keras53_samsung4_sjh.h5')
+model = load_model('./_save/samsung/keras53_samsung2_sjh.h5')
 
 # 3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
