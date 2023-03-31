@@ -23,7 +23,7 @@ xy_train = train_datagen.flow_from_directory(
     'd:/study_data/_data/brain/train/',
     target_size=(100,100),  #200에 200으로 확대또는축소
     batch_size=5, 
-    class_mode='binary', #0바이너리 넣으면 0과1만됨
+    class_mode='categorical', #0바이너리 넣으면 0과1만됨
     color_mode='grayscale',
     # color_mode='rgb',
     shuffle=True,
@@ -32,16 +32,21 @@ xy_test = test_datagen.flow_from_directory(
     'd:/study_data/_data/brain/test/',
     target_size=(100,100),  #200에 200으로 확대또는축소
     batch_size=5, #전체 데이터 갯수
-    class_mode='binary', #0바이너리 넣으면 0과1만됨
+    class_mode='categorical', #0바이너리 넣으면 0과1만됨
     color_mode='grayscale',    
     # color_mode='rgb',
     shuffle=True,
 )
+
+
 print(type(xy_train))
 print(type(xy_train[0]))
 print(type(xy_train[0][0]))
 print(type(xy_train[0][1]))
 
+
+print(xy_train[0][0].shape)
+print(xy_train[0][1].shape)
 #현재 x는 (5,200,200) 짜리 데이터가 32덩어리
 
 #2.모델구성
@@ -61,10 +66,10 @@ model.add(Flatten())
 model.add(Dense(128, activation= LeakyReLU(0.5)))
 model.add(Dense(64, activation= LeakyReLU(0.5)))
 model.add(Dense(50, activation= LeakyReLU(0.5)))
-model.add(Dense(1, activation='sigmoid'))
+model.add(Dense(2, activation='softmax'))#1->2
 
 #3.컴파일,훈련
-model.compile(loss='binary_crossentropy',optimizer = 'adam',metrics = ['acc'])
+model.compile(loss='categorical_crossentropy',optimizer = 'adam',metrics = ['acc'])
 # hist = model.fit_generator(xy_train, epochs=1000 ,steps_per_epoch = 32 , validation_data=xy_test, validation_steps=24,)   
 # hist = model.fit(xy_train[0][0],xy_train[0][1],epochs=10,batch_size =16,validation=(xy_test[0][0],xy_test[0][1]))
 hist = model.fit(xy_train, epochs=30 ,
@@ -76,6 +81,7 @@ loss = hist.history['loss']
 val_loss = hist.history['val_loss']
 acc = hist.history['acc']
 val_acc = hist.history['val_acc']
+
 
 print('loss: ', loss[-1])
 print('val_loss: ', val_loss[-1])
