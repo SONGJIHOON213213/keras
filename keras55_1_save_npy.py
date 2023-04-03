@@ -85,16 +85,16 @@ y_test = np.save(path + 'keras55_1_test_y.npy',arr=xy_train[0][0])
 #                  validation_data=xy_test, 
 #                  validation_steps=24
 # )   
-# loss = hist.history['loss']
-# val_loss = hist.history['val_loss']
-# acc = hist.history['acc']
-# val_acc = hist.history['val_acc']
+loss = hist.history['loss']
+val_loss = hist.history['val_loss']
+acc = hist.history['acc']
+val_acc = hist.history['val_acc']
 
 
-# print('loss: ', loss[-1])
-# print('val_loss: ', val_loss[-1])
-# print('acc: ', acc[-1])
-# print('val_acc: ', val_acc[-1])
+print('loss: ', loss[-1])
+print('val_loss: ', val_loss[-1])
+print('acc: ', acc[-1])
+print('val_acc: ', val_acc[-1])
 # #전체데이터/batch = 160/5 = 32
 # #발리데이터/batch =  120/5 = 5
 

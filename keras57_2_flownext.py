@@ -36,16 +36,32 @@ x_data = train_datagen.flow(np.tile(x_train[0].reshape(28*28),
      np.zeros(augment_size),
      batch_size=augment_size,
      shuffle=True, #y데이터 : 그림만 그릴꺼라 필요없어서 걍 0넣어줘서
-)
+).next()
 
-# print(x_data) 
-# print(x_data[0]) #x와 y가 모두포함
+print(x_data) 
+print(x_data[0]) #x와 y가 모두포함
 # print(x_data[0][0].shape) #(100,28,28,1)  
 # print(x_data[0][1].shape) #(100,28,28,1)  
-# import matplotlib.pyplot as plt
-# plt.figure(figsize=(7,7))
-# for i in range(49):
-#     plt.subplot(7,7,i+1)
-#     plt.axis('off')
-#     plt.imshow(x_data[0][0][i],cmap='gray')
-# plt.show()
+import matplotlib.pyplot as plt
+plt.figure(figsize=(7,7))
+for i in range(49):
+    plt.subplot(7,7,i+1)
+    plt.axis('off')
+#plt.imshow(x_data[0][0][i],cmap='gray')
+    plt.imshow(x_data[0][i],cmap='gray') #.튜플이라서   
+plt.show()
+
+#############################.next()사용
+# #x와y가 합쳐진 데이터 출력
+# print(x_data)
+# print(type(x_data))
+# print(x_data[0])
+# print(x_data[0].shape,x_data[1].shape)#numpy 라서 shape 찍을수있다.
+# print(typex_data[0])) #<<class'numpy.ndarray'>
+
+
+#############################.next()미사용
+#x와y가 모두 포함
+
+#(x,y)튜플 튜플로 넘파이가 들어가있는게 원배치 이게 이터레이터 형태로 되어있음
+#[]딕셔너리
