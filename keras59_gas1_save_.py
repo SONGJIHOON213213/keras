@@ -45,7 +45,7 @@ x = train_csv.copy()
 scaler = StandardScaler()
 x = scaler.fit_transform(x)
 
-pca = PCA(n_components=2)
+pca = PCA(n_components=6)
 pca_x = pca.fit_transform(x)
 
 kmeans = KMeans(n_clusters=3)
