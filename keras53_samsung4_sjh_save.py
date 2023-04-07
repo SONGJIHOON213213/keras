@@ -27,7 +27,7 @@ def split_x(dt, st):
 path = './_data/시험/'
 path_save = './_save/samsung/'
 
-datasets_hyundai  = pd.read_csv(path + '현대자동차2.csv', index_col=0, encoding='cp949')
+datasets_hyundai  = pd.read_csv(path + 'pollution.csv', index_col=0, encoding='cp949')
 datasets_samsung = pd.read_csv(path + '삼성전자 주가3.csv', index_col=0, encoding='cp949')
 print(datasets_samsung.columns)
 print(datasets_hyundai.columns)

@@ -41,16 +41,16 @@ print(x.shape)
 
 
 ######3.원핫########### 2차원으로 받아야됨
-# from sklearn.preprocessing import OneHotEncoder
-# ohe = OneHotEncoder()
-# x = token.texts_to_sequences([text1])
-# x = np.array(x) # convert the list to a numpy array 
-# x_encoded = ohe.fit_transform(np.array(x).reshape(-1,1)).toarray()
-# print(x.shape)
-# print(x_encoded)
+from sklearn.preprocessing import OneHotEncoder
+ohe = OneHotEncoder()
+x = token.texts_to_sequences([text1])
+x = np.array(x) # convert the list to a numpy array 
+x_encoded = ohe.fit_transform(np.array(x).reshape(-1,1)).toarray()
+print(x.shape)
+print(x_encoded)
 
-# y = token.texts_to_sequences([text2])
-# y = np.array(x) # convert the list to a numpy array 
-# y_encoded = ohe.fit_transform(np.array(y).reshape(-1,1)).toarray()
-# print(y.shape)
-# print(y_encoded)
+y = token.texts_to_sequences([text2])
+y = np.array(x) # convert the list to a numpy array 
+y_encoded = ohe.fit_transform(np.array(y).reshape(-1,1)).toarray()
+print(y.shape)
+print(y_encoded)
