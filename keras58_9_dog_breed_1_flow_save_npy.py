@@ -22,14 +22,14 @@ train_datagen = ImageDataGenerator(
 
 test_datagen = ImageDataGenerator(rescale=1./255)
 
-breed = train_datagen.flow_from_directory('d:/study_data/_data/breed/dog_v1/', target_size=(100, 100), batch_size=100, class_mode='categorical', color_mode='rgb', shuffle=True)
+breed = train_datagen.flow_from_directory('d:/study_data/_data/breed/dog_v1/', target_size=(40, 40), batch_size=100, class_mode='categorical', color_mode='rgb', shuffle=True)
 
 breed_x = breed[0][0]
 breed_y = breed[0][1]
 
 breed_x_train, breed_x_test, breed_y_train, breed_y_test = train_test_split(breed_x, breed_y, train_size=0.7, shuffle=True, random_state=123)
 
-augment_size = 100
+augment_size = 20
 
 np.random.seed(0)
 randidx = np.random.randint(breed_x_train.shape[0], size=augment_size)
