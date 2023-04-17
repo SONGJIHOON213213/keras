@@ -4,14 +4,14 @@ import time
 from sklearn.model_selection import StratifiedShuffleSplit
 
 path = 'd:/study_data/_data/train/'
-save_path = 'd:/study_data/_save/train/'
+save_path = 'd:/study_data/_save/train3/'
 datagen = ImageDataGenerator(rescale=1.)
 
 start = time.time()
 train = datagen.flow_from_directory(path,
             target_size=(128,128),
-            batch_size=11220,
-            class_mode='categorical',
+            batch_size=128,
+            class_mode='binary',
             color_mode= 'grayscale',
             shuffle= True)
 

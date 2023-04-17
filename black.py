@@ -2,7 +2,7 @@ from PIL import Image
 import os
 
 # 이미지를 저장할 폴더 경로
-folder_path = "d:/study_data/_data/dog/golden_retriever"
+folder_path = "d:/study_data/_data/train_face/unsavory"
 
 # 폴더 내 모든 이미지 파일 이름 가져오기
 image_names = os.listdir(folder_path)
